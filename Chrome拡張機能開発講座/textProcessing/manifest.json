@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "テキストユーティリティツール",
+  "version": "1.0",
+  "description": "テキスト処理のための便利な機能を提供します",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
