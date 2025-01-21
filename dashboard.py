@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+import japanize_matplotlib
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -16,7 +17,6 @@ st.set_page_config(
 )
 
 # プロットの基本設定
-plt.rcParams['font.family'] = ['MS Gothic', 'DejaVu Sans']
 plt.rcParams['figure.autolayout'] = True
 sns.set_theme(style="whitegrid")  # seabornのグリッドスタイルを使用
 
