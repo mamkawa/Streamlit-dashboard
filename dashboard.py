@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+import japanize_matplotlib
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -17,8 +18,7 @@ st.set_page_config(
 
 # プロットの基本設定
 plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Helvetica', 'Yu Gothic', 'Meiryo'],
+    'font.family': 'IPAexGothic',
     'axes.unicode_minus': False,
     'figure.subplot.left': 0.15,
     'figure.subplot.right': 0.95,
@@ -184,10 +184,11 @@ def main():
                 st.dataframe(weekday_stats, use_container_width=True)
             
             with col2:
-                st.subheader("曜日別販売数量")
+                st.subheader("曜日別取引件数")
                 fig2, ax2 = create_figure()
-                sns.boxplot(data=filtered_df, x='曜日', y='数量', order=order, ax=ax2)
-                format_axis_labels(ax2, '曜日', '販売数量', '曜日別販売数量分布')
+                weekday_counts = filtered_df['曜日'].value_counts().reindex(order)
+                weekday_counts.plot(kind='bar', ax=ax2)
+                format_axis_labels(ax2, '曜日', '取引件数', '曜日別取引件数')
                 plt.xticks(rotation=45)
                 st.pyplot(fig2)
 
