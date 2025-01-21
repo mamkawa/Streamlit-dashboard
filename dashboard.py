@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
-import japanize_matplotlib
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -18,13 +17,14 @@ st.set_page_config(
 
 # プロットの基本設定
 plt.rcParams.update({
-    'font.family': ['IPAexGothic', 'MS Gothic', 'Hiragino Sans'],
-    'font.size': 10,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Helvetica', 'Yu Gothic', 'Meiryo'],
     'axes.unicode_minus': False,
     'figure.subplot.left': 0.15,
     'figure.subplot.right': 0.95,
     'figure.subplot.bottom': 0.15,
-    'figure.subplot.top': 0.95
+    'figure.subplot.top': 0.95,
+    'font.size': 10
 })
 
 def create_figure(figsize=(10, 6)):
