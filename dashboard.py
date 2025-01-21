@@ -20,7 +20,9 @@ plt.rcParams['font.family'] = 'MS Gothic'
 def load_data():
     DATA_PATH = Path(__file__).parent / "data" / "sampledata.csv"
     try:
-        df = pd.read_csv(DATA_PATH, encoding='utf-8', parse_dates=['購入日'])
+        df = pd.read_csv(DATA_PATH, encoding='utf-8')
+        # カラム名を表示（デバッグ用）
+        st.write("データのカラム名:", df.columns.tolist())
         return df
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
@@ -32,31 +34,38 @@ def preprocess_data(df):
     if df is None:
         return None
     
-    df = df.copy()
-    df['曜日'] = df['購入日'].dt.day_name()
-    df['年'] = df['購入日'].dt.year
-    df['月'] = df['購入日'].dt.month
-    df['日'] = df['購入日'].dt.day
-    
-    # 曜日を日本語に変換
-    weekday_mapping = {
-        'Monday': '月曜日',
-        'Tuesday': '火曜日',
-        'Wednesday': '水曜日',
-        'Thursday': '木曜日',
-        'Friday': '金曜日',
-        'Saturday': '土曜日',
-        'Sunday': '日曜日'
-    }
-    df['曜日'] = df['曜日'].map(weekday_mapping)
-    return df
+    try:
+        df = df.copy()
+        # 日付の変換
+        df['購入日'] = pd.to_datetime(df['購入日'])
+        df['曜日'] = df['購入日'].dt.day_name()
+        df['年'] = df['購入日'].dt.year
+        df['月'] = df['購入日'].dt.month
+        df['日'] = df['購入日'].dt.day
+        
+        # 曜日を日本語に変換
+        weekday_mapping = {
+            'Monday': '月曜日',
+            'Tuesday': '火曜日',
+            'Wednesday': '水曜日',
+            'Thursday': '木曜日',
+            'Friday': '金曜日',
+            'Saturday': '土曜日',
+            'Sunday': '日曜日'
+        }
+        df['曜日'] = df['曜日'].map(weekday_mapping)
+        return df
+    except Exception as e:
+        st.error(f"データ前処理エラー: {str(e)}")
+        return None
 
 # タイトル
 st.title("購買データ分析ダッシュボード")
 
 # データ読み込みと前処理
 df = load_data()
-df = preprocess_data(df)
+if df is not None:
+    df = preprocess_data(df)
 
 if df is not None:
     # サイドバー - フィルター
@@ -75,8 +84,9 @@ if df is not None:
     
     # エリアフィルター
     st.sidebar.subheader("エリア選択")
-    areas = sorted(df['地域'].unique())
-    selected_areas = st.sidebar.multiselect("地域", areas, default=areas)
+    # カラム名を修正（'地域'を'エリア'に変更）
+    areas = sorted(df['エリア'].unique())
+    selected_areas = st.sidebar.multiselect("エリア", areas, default=areas)
     
     # 性別フィルター
     st.sidebar.subheader("性別選択")
@@ -91,7 +101,7 @@ if df is not None:
     # データのフィルタリング
     filtered_df = df[
         (df['購入日'].dt.date == selected_date) &
-        (df['地域'].isin(selected_areas)) &
+        (df['エリア'].isin(selected_areas)) &
         (df['性別'].isin(selected_genders)) &
         (df['年代'].isin(selected_age_groups))
     ]
