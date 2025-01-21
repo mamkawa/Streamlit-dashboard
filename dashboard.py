@@ -30,7 +30,7 @@ def load_data():
             st.write("dataディレクトリ内のファイル:", os.listdir(data_dir))
         
         # データファイルのパスを指定
-        file_path = os.path.join("data", "sample-data.csv")
+        file_path = os.path.join("data", "sampledata.csv")
         
         # ファイルの存在確認
         if not os.path.exists(file_path):
