@@ -19,16 +19,6 @@ plt.rcParams['font.family'] = ['MS Gothic', 'DejaVu Sans']
 @st.cache_data
 def load_data():
     try:
-        # 現在のディレクトリとファイル一覧を表示（デバッグ用）
-        current_dir = os.getcwd()
-        st.write("現在のディレクトリ:", current_dir)
-        st.write("ディレクトリ内のファイル:", os.listdir())
-        
-        # dataディレクトリ内のファイル一覧を表示
-        data_dir = "data"
-        if os.path.exists(data_dir):
-            st.write("dataディレクトリ内のファイル:", os.listdir(data_dir))
-        
         # データファイルのパスを指定
         file_path = os.path.join("data", "sampledata.csv")
         
@@ -39,9 +29,6 @@ def load_data():
             
         # データの読み込み
         df = pd.read_csv(file_path, encoding='utf-8')
-        
-        # カラム名を表示（デバッグ用）
-        st.write("データのカラム:", df.columns.tolist())
         
         # 日付の変換
         df['購入日'] = pd.to_datetime(df['購入日'])
@@ -63,12 +50,10 @@ def load_data():
         elif '売上金' in df.columns:
             df['売上金額'] = df['売上金']
         
-        st.success(f"データ読み込み成功! 使用したパス: {file_path}")
         return df
         
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
-        st.write("エラーの詳細:", str(e))
         return None
 
 # タイトル
