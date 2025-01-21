@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import japanize_matplotlib
 import os
+from pathlib import Path
 
 # ページ設定
 st.set_page_config(page_title="購買データ分析ダッシュボード", layout="wide")
@@ -11,9 +12,12 @@ st.set_page_config(page_title="購買データ分析ダッシュボード", layo
 # タイトル
 st.title("購買データ分析ダッシュボード")
 
+# データファイルのパスを設定
+DATA_PATH = Path(__file__).parent / "data" / "sampledata.csv"
+
 # データ読み込み
 try:
-    df = pd.read_csv('data/sampledata.csv', encoding='utf-8')
+    df = pd.read_csv(DATA_PATH, encoding='utf-8')
     st.success("データ読み込み成功!")
     
     # 基本的な前処理
