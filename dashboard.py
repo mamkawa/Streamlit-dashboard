@@ -21,22 +21,29 @@ def load_data():
     try:
         # データファイルのパスを指定（複数のパターンを試行）
         possible_paths = [
-            "data/sample-data.csv",  # ハイフン付きのファイル名
-            "sample-data.csv",
-            "../data/sample-data.csv",
-            os.path.join(os.path.dirname(__file__), "data", "sample-data.csv")
+            "sample-data.csv",  # リポジトリのルートディレクトリ
+            "./sample-data.csv",  # 現在のディレクトリ
+            "./data/sample-data.csv",  # dataディレクトリ
+            "../sample-data.csv",  # 1階層上
+            os.path.join(os.path.dirname(__file__), "sample-data.csv")  # スクリプトと同じディレクトリ
         ]
         
         df = None
         used_path = None
         
+        # 現在のディレクトリとファイル一覧を表示（デバッグ用）
+        st.write("現在のディレクトリ:", os.getcwd())
+        st.write("ディレクトリ内のファイル:", os.listdir())
+        
         for path in possible_paths:
             try:
                 if os.path.exists(path):
+                    st.write(f"ファイルが見つかりました: {path}")
                     df = pd.read_csv(path, encoding='utf-8')
                     used_path = path
                     break
-            except:
+            except Exception as e:
+                st.write(f"パス {path} でエラー: {str(e)}")
                 continue
         
         if df is None:
@@ -44,8 +51,6 @@ def load_data():
             st.write("試行したパス:")
             for path in possible_paths:
                 st.write(f"- {path}")
-            st.write("現在のディレクトリ:", os.getcwd())
-            st.write("ディレクトリ内のファイル:", os.listdir())
             return None
             
         # カラム名を表示（デバッグ用）
@@ -76,8 +81,6 @@ def load_data():
         
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
-        st.write("現在のディレクトリ:", os.getcwd())
-        st.write("ディレクトリ内のファイル:", os.listdir())
         return None
 
 # タイトル
