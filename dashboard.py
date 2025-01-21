@@ -5,13 +5,27 @@ import seaborn as sns
 import os
 import warnings
 import matplotlib as mpl
+import subprocess
+import sys
 
 # 警告を無視
 warnings.filterwarnings('ignore')
 
-# 日本語フォント設定
-mpl.rc('font', family='DejaVu Sans')
-mpl.rcParams['axes.formatter.use_locale'] = True
+# フォントのインストールと設定
+def setup_japanese_fonts():
+    # Ubuntuの場合のフォントインストール
+    try:
+        subprocess.run(['apt-get', 'update'], check=True)
+        subprocess.run(['apt-get', 'install', '-y', 'fonts-noto-cjk'], check=True)
+    except:
+        pass  # インストールに失敗しても続行
+    
+    # フォント設定
+    plt.rcParams['font.family'] = ['Noto Sans CJK JP', 'sans-serif']
+    plt.rcParams['axes.unicode_minus'] = False
+    
+# フォントのセットアップを実行
+setup_japanese_fonts()
 
 # ページ設定
 st.set_page_config(
@@ -22,11 +36,12 @@ st.set_page_config(
 
 # プロットの基本設定
 plt.style.use('default')
-sns.set_theme(style="whitegrid", font='DejaVu Sans')
+sns.set_theme(style="whitegrid")
 
 def create_figure(figsize=(10, 6)):
     fig, ax = plt.subplots(figsize=figsize)
     ax.tick_params(labelsize=10)
+    plt.rcParams['font.size'] = 10  # デフォルトのフォントサイズ
     return fig, ax
 
 @st.cache_data
