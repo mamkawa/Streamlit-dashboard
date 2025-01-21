@@ -72,7 +72,7 @@ def load_data():
         df = pd.read_csv(file_path, encoding='utf-8')
         
         # カラム名の確認と表示
-        st.write("読み込んだデータのカラム:", df.columns.tolist())
+        # st.write("読み込んだデータのカラム:", df.columns.tolist())  # この行を削除
         
         # 必須カラムの存在確認
         required_columns = ['購入日']
