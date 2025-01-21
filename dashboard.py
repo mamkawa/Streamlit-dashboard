@@ -79,17 +79,17 @@ def load_data():
             'Sunday': '日曜日'
         })
         
-        # 売上金額の計算
-        if '売上金額' not in df.columns:
+        # 売上金額の設定
+        if '購入金額' in df.columns:
+            df['売上金額'] = df['購入金額']
+        elif '売上金額' not in df.columns:
             if '売上金' in df.columns:
                 df['売上金額'] = df['売上金']
             elif '売上' in df.columns:
                 df['売上金額'] = df['売上']
-            elif all(col in df.columns for col in ['単価', '数量']):
-                df['売上金額'] = df['単価'] * df['数量']
             else:
                 st.error("売上金額を計算するために必要なカラムが見つかりません。")
-                st.write("必要なカラム: '売上金額'、'売上金'、'売上'、または ('単価' と '数量')")
+                st.write("必要なカラム: '売上金額'、'購入金額'、'売上金'、または '売上'")
                 return None
         
         return df
