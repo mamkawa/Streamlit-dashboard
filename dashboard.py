@@ -43,10 +43,28 @@ def format_axis_labels(ax, xlabel, ylabel, title):
 @st.cache_data
 def load_data():
     try:
-        file_path = os.path.join("data", "sampledata.csv")
-        if not os.path.exists(file_path):
-            st.error(f"ファイルが見つかりません: {file_path}")
+        possible_paths = [
+            os.path.join("data", "sample-data.csv"),
+            "sample-data.csv",
+            os.path.join("..", "data", "sample-data.csv"),
+            os.path.join(os.path.dirname(__file__), "data", "sample-data.csv")
+        ]
+        
+        # 現在のディレクトリとファイル一覧を表示（デバッグ用）
+        st.write("現在のディレクトリ:", os.getcwd())
+        st.write("ファイル一覧:", os.listdir())
+        
+        # 利用可能なパスを探す
+        file_path = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                file_path = path
+                break
+        
+        if file_path is None:
+            st.error(f"ファイルが見つかりません。試行したパス: {possible_paths}")
             return None
+            
         df = pd.read_csv(file_path, encoding='utf-8')
         df['購入日'] = pd.to_datetime(df['購入日'])
         df['年月'] = df['購入日'].dt.strftime('%Y/%m')
