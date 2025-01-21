@@ -4,28 +4,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
-import matplotlib as mpl
-import subprocess
-import sys
 
 # 警告を無視
 warnings.filterwarnings('ignore')
-
-# フォントのインストールと設定
-def setup_japanese_fonts():
-    # Ubuntuの場合のフォントインストール
-    try:
-        subprocess.run(['apt-get', 'update'], check=True)
-        subprocess.run(['apt-get', 'install', '-y', 'fonts-noto-cjk'], check=True)
-    except:
-        pass  # インストールに失敗しても続行
-    
-    # フォント設定
-    plt.rcParams['font.family'] = ['Noto Sans CJK JP', 'sans-serif']
-    plt.rcParams['axes.unicode_minus'] = False
-    
-# フォントのセットアップを実行
-setup_japanese_fonts()
 
 # ページ設定
 st.set_page_config(
@@ -36,12 +17,14 @@ st.set_page_config(
 
 # プロットの基本設定
 plt.rcParams.update({
-    'font.family': 'IPAexGothic',
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP'],
     'font.size': 10,
     'axes.unicode_minus': False,
-    'axes.grid': True,
-    'grid.linestyle': '--',
-    'grid.alpha': 0.6
+    'figure.subplot.left': 0.15,
+    'figure.subplot.right': 0.95,
+    'figure.subplot.bottom': 0.15,
+    'figure.subplot.top': 0.95
 })
 
 def create_figure(figsize=(10, 6)):
@@ -52,13 +35,10 @@ def create_figure(figsize=(10, 6)):
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=10, fontname='IPAexGothic')
-    ax.set_ylabel(ylabel, fontsize=10, fontname='IPAexGothic')
-    ax.set_title(title, fontsize=12, fontname='IPAexGothic', pad=15)
-    for label in ax.get_xticklabels():
-        label.set_fontname('IPAexGothic')
-    for label in ax.get_yticklabels():
-        label.set_fontname('IPAexGothic')
+    ax.set_xlabel(xlabel, fontsize=10)
+    ax.set_ylabel(ylabel, fontsize=10)
+    ax.set_title(title, fontsize=12, pad=15)
+    plt.tight_layout()
 
 @st.cache_data
 def load_data():
