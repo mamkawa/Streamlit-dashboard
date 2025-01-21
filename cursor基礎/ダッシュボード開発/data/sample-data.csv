@@ -1,11 +1,11 @@
 purchase_date,customer_id,age,gender,category,product_name,amount,payment_method,region
-2024-01-01,C001,25,M,Electronics,Smartphone,80000,Credit Card,Tokyo
-2024-01-01,C002,35,F,Fashion,Designer Bag,45000,Credit Card,Osaka
-2024-01-02,C003,45,M,Home,Furniture,120000,Bank Transfer,Nagoya
-2024-01-02,C004,28,F,Beauty,Skincare Set,15000,Credit Card,Tokyo
-2024-01-03,C005,32,M,Electronics,Laptop,150000,Credit Card,Fukuoka
-2024-01-03,C006,41,F,Fashion,Dress,25000,PayPay,Osaka
-2024-01-04,C007,29,M,Home,Kitchen Set,35000,Bank Transfer,Tokyo
-2024-01-04,C008,38,F,Beauty,Makeup Kit,20000,Credit Card,Sapporo
-2024-01-05,C009,52,M,Electronics,Tablet,60000,Credit Card,Osaka
-2024-01-05,C010,31,F,Fashion,Shoes,30000,PayPay,Tokyo
+2024/10/05,C001,25,M,Electronics,Smartphone,80000,Credit Card,Tokyo
+2024/10/15,C002,35,F,Fashion,Designer Bag,45000,Credit Card,Osaka
+2024/10/25,C003,45,M,Home,Furniture,120000,Bank Transfer,Nagoya
+2024/11/05,C004,28,F,Beauty,Skincare Set,15000,Credit Card,Tokyo
+2024/11/15,C005,32,M,Electronics,Laptop,150000,Credit Card,Fukuoka
+2024/11/25,C006,41,F,Fashion,Dress,25000,PayPay,Osaka
+2024/12/05,C007,29,M,Home,Kitchen Set,35000,Bank Transfer,Tokyo
+2024/12/15,C008,38,F,Beauty,Makeup Kit,20000,Credit Card,Sapporo
+2024/12/25,C009,52,M,Electronics,Tablet,60000,Credit Card,Osaka
+2024/12/30,C010,31,F,Fashion,Shoes,30000,PayPay,Tokyo

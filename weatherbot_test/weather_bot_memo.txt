@@ -1,0 +1,97 @@
+# 天気通知Slack Bot 仕様メモ
+
+## 概要
+- 当日24時間の天気予報をSlackに通知するBot
+- OpenMeteo APIを使用して天気情報を取得
+- 通知先Slackチャンネル: #天気通知
+
+## 主な機能
+1. 天気情報取得
+   - OpenMeteo APIを使用
+   - 取得データ: 気温、降水確率、天気状態
+   - 24時間分のデータを1時間ごとに取得
+
+2. Slack通知
+   - チャンネル: #天気通知
+   - Bot名: 天気予報Bot
+   - アイコン: ☀️（sunny）
+   - 通知時刻: 毎日午前6時
+
+## 表示内容
+- 日付
+- 1時間ごとの詳細情報
+  - 時刻
+  - 天気（絵文字付き）
+  - 気温（℃）
+  - 降水確率（%）
+
+## 技術仕様
+- プラットフォーム: Google Apps Script
+- API: OpenMeteo API
+- 位置情報: 東京（緯度: 35.6762, 経度: 139.6503）
+- 実行トリガー: 毎日午前6時
+
+## 必要な設定
+1. Slackワークスペースで#天気通知チャンネルを作成
+2. Incoming WebhooksのURLを取得
+3. Google Apps Scriptでトリガーを設定 
+
+## Slack Incoming Webhook設定手順
+1. Slackアプリの作成
+   - Slack API (https://api.slack.com/apps) にアクセス
+   - 「Create New App」をクリック
+   - 「From scratch」を選択
+   - App Nameに「Weather Bot」と入力
+   - ワークスペースを選択して「Create App」をクリック
+
+2. Webhookの有効化
+   - 左サイドメニューから「Incoming Webhooks」を選択
+   - 「Activate Incoming Webhooks」をOnに切り替え
+   - 「Add New Webhook to Workspace」をクリック
+
+3. チャンネルの設定
+   - 投稿先として「#天気通知」チャンネルを選択
+   - 「許可する」をクリック
+   - 生成されたWebhook URLをコピー
+
+4. Google Apps Scriptへの設定
+   - コピーしたWebhook URLを`Code.gs`の`SLACK_WEBHOOK_URL`に貼り付け
+   - URLは他人に見られないよう注意（シークレット情報）
+
+5. 動作確認
+   - Google Apps Scriptエディタで`createWeatherReport()`を実行
+   - Slackの#天気通知チャンネルに投稿されることを確認 
+
+## トラブルシューティング
+1. Webhook URLエラーの場合
+   - エラーの可能性がある原因：
+     - URLの形式が正しくない
+     - Webhookの権限が不足している
+     - チャンネルが存在しない
+     - Webhookが無効化されている
+
+2. 確認事項
+   - Slackワークスペースに#天気通知チャンネルが作成されているか
+   - アプリがワークスペースにインストールされているか
+   - Webhook URLが正しくコピーされているか
+   - Incoming Webhooksが有効になっているか
+
+3. 解決手順
+   a. Webhook URLの再取得
+      - Slack APIダッシュボードに戻る
+      - アプリの設定ページを開く
+      - 「Incoming Webhooks」から新しいURLを取得
+
+   b. チャンネルの確認
+      - #天気通知チャンネルが存在することを確認
+      - Botがチャンネルに投稿できる権限があることを確認
+
+   c. アプリの再インストール
+      - 必要に応じてアプリを一度削除
+      - 最初からアプリを作り直す
+
+4. セキュリティ注意事項
+   - Webhook URLは秘密情報として扱う
+   - URLをGitHubなどの公開リポジトリにアップロードしない
+   - URLを第三者と共有しない
+   - 不正使用が疑われる場合は、すぐにURLを再生成する 
