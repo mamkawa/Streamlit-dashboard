@@ -21,10 +21,10 @@ def load_data():
     try:
         # データファイルのパスを指定（複数のパターンを試行）
         possible_paths = [
-            "data/sampledata.csv",  # ローカル開発用
-            "sampledata.csv",       # ルートディレクトリ
-            "../data/sampledata.csv",  # 1階層上
-            os.path.join(os.path.dirname(__file__), "data", "sampledata.csv")  # 絶対パス
+            "data/sample-data.csv",  # ハイフン付きのファイル名
+            "sample-data.csv",
+            "../data/sample-data.csv",
+            os.path.join(os.path.dirname(__file__), "data", "sample-data.csv")
         ]
         
         df = None
@@ -65,6 +65,12 @@ def load_data():
             'Sunday': '日曜日'
         })
         
+        # 売上金額の計算（売上金額がない場合は単価×数量で計算）
+        if '売上金額' not in df.columns and '売上金' not in df.columns:
+            df['売上金額'] = df['単価'] * df['数量']
+        elif '売上金' in df.columns:
+            df['売上金額'] = df['売上金']
+        
         st.success(f"データ読み込み成功! 使用したパス: {used_path}")
         return df
         
@@ -96,32 +102,8 @@ if df is not None:
     )
     
     try:
-        # エリアフィルター
-        st.sidebar.subheader("エリア選択")
-        # カラム名を確認して適切な名前を使用
-        area_column = '地域' if '地域' in df.columns else 'エリア'
-        areas = sorted(df[area_column].unique())
-        selected_areas = st.sidebar.multiselect("エリア", areas, default=areas)
-        
-        # 性別フィルター
-        st.sidebar.subheader("性別選択")
-        gender_column = '性別'
-        genders = sorted(df[gender_column].unique())
-        selected_genders = st.sidebar.multiselect("性別", genders, default=genders)
-        
-        # 年代フィルター
-        st.sidebar.subheader("年代選択")
-        age_column = '年代'
-        age_groups = sorted(df[age_column].unique())
-        selected_age_groups = st.sidebar.multiselect("年代", age_groups, default=age_groups)
-        
-        # データのフィルタリング
-        filtered_df = df[
-            (df['購入日'].dt.date == selected_date) &
-            (df[area_column].isin(selected_areas)) &
-            (df[gender_column].isin(selected_genders)) &
-            (df[age_column].isin(selected_age_groups))
-        ]
+        # データのフィルタリング（日付のみ）
+        filtered_df = df[df['購入日'].dt.date == selected_date]
         
         # 分析タイプの選択
         analysis_type = st.sidebar.selectbox(
@@ -150,7 +132,8 @@ if df is not None:
             
             with col2:
                 st.write("基本統計情報:")
-                st.dataframe(filtered_df.describe(), use_container_width=True)
+                numeric_cols = filtered_df.select_dtypes(include=['int64', 'float64']).columns
+                st.dataframe(filtered_df[numeric_cols].describe(), use_container_width=True)
         
         elif analysis_type == "曜日別分析":
             st.header("曜日別分析")
