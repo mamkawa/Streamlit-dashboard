@@ -60,6 +60,17 @@ def load_data():
         # データの読み込みと前処理
         df = pd.read_csv(file_path, encoding='utf-8')
         
+        # カラム名の確認と表示
+        st.write("読み込んだデータのカラム:", df.columns.tolist())
+        
+        # 必須カラムの存在確認
+        required_columns = ['購入日']
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            st.error(f"必要なカラムが見つかりません: {missing_columns}")
+            return None
+        
+        # 日付の変換
         df['購入日'] = pd.to_datetime(df['購入日'])
         df['年月'] = df['購入日'].dt.strftime('%Y/%m')
         df['曜日'] = df['購入日'].dt.day_name().map({
@@ -67,10 +78,20 @@ def load_data():
             'Thursday': '木曜日', 'Friday': '金曜日', 'Saturday': '土曜日',
             'Sunday': '日曜日'
         })
-        if '売上金額' not in df.columns and '売上金' not in df.columns:
-            df['売上金額'] = df['単価'] * df['数量']
-        elif '売上金' in df.columns:
-            df['売上金額'] = df['売上金']
+        
+        # 売上金額の計算
+        if '売上金額' not in df.columns:
+            if '売上金' in df.columns:
+                df['売上金額'] = df['売上金']
+            elif '売上' in df.columns:
+                df['売上金額'] = df['売上']
+            elif all(col in df.columns for col in ['単価', '数量']):
+                df['売上金額'] = df['単価'] * df['数量']
+            else:
+                st.error("売上金額を計算するために必要なカラムが見つかりません。")
+                st.write("必要なカラム: '売上金額'、'売上金'、'売上'、または ('単価' と '数量')")
+                return None
+        
         return df
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
