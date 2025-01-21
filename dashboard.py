@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
-from matplotlib import font_manager
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -17,11 +16,11 @@ st.set_page_config(
 )
 
 # プロットの基本設定
-font_manager.fontManager.addfont('/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc')
-plt.rcParams['font.family'] = ['Noto Sans CJK JP', 'sans-serif']
-plt.rcParams['axes.unicode_minus'] = False  # マイナス記号を正しく表示
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['Arial', 'Yu Gothic', 'Hiragino Maru Gothic Pro']
+plt.rcParams['axes.unicode_minus'] = False
 plt.rcParams['figure.autolayout'] = True
-sns.set_theme(style="whitegrid")  # seabornのグリッドスタイルを使用
+sns.set_theme(style="whitegrid")
 
 @st.cache_data
 def load_data():
