@@ -16,14 +16,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# グラフの基本設定
+# フォントの設定
 plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Hiragino Sans', 'Yu Gothic', 'Meiryo'],
+    'font.family': ['Noto Sans CJK JP', 'Yu Gothic', 'MS Gothic', 'IPAexGothic'],
     'axes.unicode_minus': False,
-    'axes.grid': True,
-    'grid.linestyle': '--',
-    'grid.alpha': 0.6,
     'figure.subplot.left': 0.15,
     'figure.subplot.right': 0.95,
     'figure.subplot.bottom': 0.15,
@@ -35,8 +31,8 @@ plt.rcParams.update({
     'ytick.labelsize': 10
 })
 
-# seabornの基本設定
-sns.set_theme(style="whitegrid", font="DejaVu Sans")
+# seabornの設定
+sns.set_style("whitegrid")
 
 def create_figure(figsize=(10, 6)):
     """グラフのベース設定を行う関数"""
@@ -46,9 +42,10 @@ def create_figure(figsize=(10, 6)):
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    ax.set_title(title, pad=15)
+    ax.set_xlabel(xlabel, fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=12)
+    ax.set_title(title, fontsize=14, pad=15)
+    ax.tick_params(axis='both', labelsize=10)
     plt.tight_layout()
 
 @st.cache_data
