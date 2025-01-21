@@ -2,8 +2,11 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import japanize_matplotlib
 from pathlib import Path
+import matplotlib as mpl
+
+# 日本語フォントの設定
+plt.rcParams['font.family'] = 'MS Gothic'
 
 # ページ設定
 st.set_page_config(
