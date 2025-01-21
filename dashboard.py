@@ -19,27 +19,32 @@ plt.rcParams['font.family'] = ['MS Gothic', 'DejaVu Sans']
 @st.cache_data
 def load_data():
     try:
+        # 現在のディレクトリとファイル一覧を表示（デバッグ用）
+        current_dir = os.getcwd()
+        st.write("現在のディレクトリ:", current_dir)
+        st.write("ディレクトリ内のファイル:", os.listdir())
+        
+        # スクリプトのディレクトリを取得
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        st.write("スクリプトのディレクトリ:", script_dir)
+        
         # データファイルのパスを指定（複数のパターンを試行）
         possible_paths = [
-            "データ分析/sample-data.csv",  # データ分析フォルダ内
-            "./データ分析/sample-data.csv",  # 相対パスでデータ分析フォルダ
-            os.path.join("データ分析", "sample-data.csv"),  # パス結合
-            os.path.join(os.getcwd(), "データ分析", "sample-data.csv"),  # 絶対パス
-            os.path.join(os.path.dirname(__file__), "データ分析", "sample-data.csv")  # スクリプトからの相対パス
+            os.path.join(current_dir, "sample-data.csv"),
+            os.path.join(script_dir, "sample-data.csv"),
+            os.path.join(current_dir, "data", "sample-data.csv"),
+            os.path.join(script_dir, "data", "sample-data.csv"),
+            "sample-data.csv",
+            "./sample-data.csv",
+            "../sample-data.csv",
+            "data/sample-data.csv",
+            "./data/sample-data.csv"
         ]
         
         df = None
         used_path = None
         
-        # 現在のディレクトリとファイル一覧を表示（デバッグ用）
-        st.write("現在のディレクトリ:", os.getcwd())
-        st.write("ディレクトリ内のファイル:", os.listdir())
-        
-        # データ分析フォルダ内のファイルも確認
-        data_dir = "データ分析"
-        if os.path.exists(data_dir):
-            st.write(f"{data_dir}フォルダ内のファイル:", os.listdir(data_dir))
-        
+        # 各パスを試行
         for path in possible_paths:
             try:
                 if os.path.exists(path):
@@ -86,6 +91,7 @@ def load_data():
         
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
+        st.write("エラーの詳細:", str(e))
         return None
 
 # タイトル
