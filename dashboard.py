@@ -16,13 +16,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# フォントの設定
-plt.rcParams['font.family'] = ['Hiragino Sans GB', 'Yu Gothic', 'Meiryo', 'Takao', 'DejaVu Sans']
-
-# グラフスタイルの設定
-plt.style.use('seaborn')
-sns.set(font='Hiragino Sans GB', font_scale=1.0)
+# グラフの基本設定
 plt.rcParams.update({
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Hiragino Sans', 'Yu Gothic', 'Meiryo'],
     'axes.unicode_minus': False,
     'axes.grid': True,
     'grid.linestyle': '--',
@@ -31,21 +28,27 @@ plt.rcParams.update({
     'figure.subplot.right': 0.95,
     'figure.subplot.bottom': 0.15,
     'figure.subplot.top': 0.95,
-    'font.size': 12
+    'font.size': 12,
+    'axes.labelsize': 12,
+    'axes.titlesize': 14,
+    'xtick.labelsize': 10,
+    'ytick.labelsize': 10
 })
+
+# seabornの基本設定
+sns.set_theme(style="whitegrid", font="DejaVu Sans")
 
 def create_figure(figsize=(10, 6)):
     """グラフのベース設定を行う関数"""
     fig, ax = plt.subplots(figsize=figsize)
-    ax.tick_params(labelsize=10)
+    ax.grid(True, linestyle='--', alpha=0.6)
     return fig, ax
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=12, fontfamily='Hiragino Sans GB')
-    ax.set_ylabel(ylabel, fontsize=12, fontfamily='Hiragino Sans GB')
-    ax.set_title(title, fontsize=14, fontfamily='Hiragino Sans GB', pad=15)
-    ax.tick_params(axis='both', labelsize=10)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title, pad=15)
     plt.tight_layout()
 
 @st.cache_data
