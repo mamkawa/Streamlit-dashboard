@@ -6,7 +6,6 @@ import os
 import warnings
 from matplotlib import font_manager
 import matplotlib as mpl
-import japanize_matplotlib
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -20,7 +19,8 @@ st.set_page_config(
 
 # フォントの設定
 plt.rcParams.update({
-    'font.family': 'IPAexGothic',
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Helvetica', 'Yu Gothic', 'Meiryo'],
     'axes.unicode_minus': False,
     'figure.subplot.left': 0.15,
     'figure.subplot.right': 0.95,
@@ -44,14 +44,10 @@ def create_figure(figsize=(10, 6)):
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=12, fontproperties='IPAexGothic')
-    ax.set_ylabel(ylabel, fontsize=12, fontproperties='IPAexGothic')
-    ax.set_title(title, fontsize=14, pad=15, fontproperties='IPAexGothic')
+    ax.set_xlabel(xlabel, fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=12)
+    ax.set_title(title, fontsize=14, pad=15)
     ax.tick_params(axis='both', labelsize=10)
-    for label in ax.get_xticklabels():
-        label.set_fontproperties('IPAexGothic')
-    for label in ax.get_yticklabels():
-        label.set_fontproperties('IPAexGothic')
     plt.tight_layout()
 
 @st.cache_data
@@ -228,7 +224,7 @@ def main():
                 sns.boxplot(data=filtered_df, x='曜日', y='売上金額', hue='支払方法', order=order, ax=ax2)
                 format_axis_labels(ax2, '曜日', '売上金額（円）', '支払方法別・曜日別売上金額分布')
                 plt.xticks(rotation=45)
-                plt.legend(bbox_to_anchor=(1.05, 1), fontsize=8, prop={'family': 'IPAexGothic'})
+                plt.legend(bbox_to_anchor=(1.05, 1), fontsize=8)
                 st.pyplot(fig2)
 
         st.markdown("---")
