@@ -15,9 +15,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# プロットのスタイル設定
-plt.style.use('seaborn')
+# プロットの基本設定
 plt.rcParams['font.family'] = ['MS Gothic', 'DejaVu Sans']
+plt.rcParams['figure.autolayout'] = True
+sns.set_theme(style="whitegrid")  # seabornのグリッドスタイルを使用
 
 @st.cache_data
 def load_data():
