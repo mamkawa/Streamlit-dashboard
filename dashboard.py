@@ -33,6 +33,9 @@ def load_data():
         # 日付の変換
         df['購入日'] = pd.to_datetime(df['購入日'])
         
+        # 年月の追加
+        df['年月'] = df['購入日'].dt.strftime('%Y/%m')
+        
         # 曜日の追加
         df['曜日'] = df['購入日'].dt.day_name().map({
             'Monday': '月曜日',
@@ -66,20 +69,18 @@ if df is not None:
     # サイドバー - フィルター
     st.sidebar.header("フィルター設定")
     
-    # 日付フィルター
+    # 年月フィルター
     st.sidebar.subheader("期間選択")
-    min_date = df['購入日'].min()
-    max_date = df['購入日'].max()
-    selected_date = st.sidebar.date_input(
-        "日付を選択",
-        value=min_date,
-        min_value=min_date,
-        max_value=max_date
+    available_months = sorted(df['年月'].unique())
+    selected_month = st.sidebar.selectbox(
+        "年月を選択",
+        available_months,
+        index=len(available_months)-1  # 最新の年月を初期選択
     )
     
     try:
-        # データのフィルタリング（日付のみ）
-        filtered_df = df[df['購入日'].dt.date == selected_date]
+        # データのフィルタリング（年月で）
+        filtered_df = df[df['年月'] == selected_month]
         
         # 分析タイプの選択
         analysis_type = st.sidebar.selectbox(
