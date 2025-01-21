@@ -21,11 +21,11 @@ def load_data():
     try:
         # データファイルのパスを指定（複数のパターンを試行）
         possible_paths = [
-            "sample-data.csv",  # リポジトリのルートディレクトリ
-            "./sample-data.csv",  # 現在のディレクトリ
-            "./data/sample-data.csv",  # dataディレクトリ
-            "../sample-data.csv",  # 1階層上
-            os.path.join(os.path.dirname(__file__), "sample-data.csv")  # スクリプトと同じディレクトリ
+            "データ分析/sample-data.csv",  # データ分析フォルダ内
+            "./データ分析/sample-data.csv",  # 相対パスでデータ分析フォルダ
+            os.path.join("データ分析", "sample-data.csv"),  # パス結合
+            os.path.join(os.getcwd(), "データ分析", "sample-data.csv"),  # 絶対パス
+            os.path.join(os.path.dirname(__file__), "データ分析", "sample-data.csv")  # スクリプトからの相対パス
         ]
         
         df = None
@@ -34,6 +34,11 @@ def load_data():
         # 現在のディレクトリとファイル一覧を表示（デバッグ用）
         st.write("現在のディレクトリ:", os.getcwd())
         st.write("ディレクトリ内のファイル:", os.listdir())
+        
+        # データ分析フォルダ内のファイルも確認
+        data_dir = "データ分析"
+        if os.path.exists(data_dir):
+            st.write(f"{data_dir}フォルダ内のファイル:", os.listdir(data_dir))
         
         for path in possible_paths:
             try:
