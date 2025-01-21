@@ -18,12 +18,8 @@ st.set_page_config(
 
 # フォントの設定
 plt.rcParams.update({
-    'font.family': ['Noto Sans CJK JP', 'Yu Gothic', 'MS Gothic', 'IPAexGothic'],
+    'font.family': 'IPAexGothic',
     'axes.unicode_minus': False,
-    'figure.subplot.left': 0.15,
-    'figure.subplot.right': 0.95,
-    'figure.subplot.bottom': 0.15,
-    'figure.subplot.top': 0.95,
     'font.size': 12,
     'axes.labelsize': 12,
     'axes.titlesize': 14,
@@ -33,18 +29,20 @@ plt.rcParams.update({
 
 # seabornの設定
 sns.set_style("whitegrid")
+sns.set_context("notebook", font_scale=1.0, rc={"font.family": "IPAexGothic"})
 
 def create_figure(figsize=(10, 6)):
     """グラフのベース設定を行う関数"""
     fig, ax = plt.subplots(figsize=figsize)
     ax.grid(True, linestyle='--', alpha=0.6)
+    plt.rcParams['font.family'] = 'IPAexGothic'  # 各図で明示的にフォントを設定
     return fig, ax
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=12)
-    ax.set_ylabel(ylabel, fontsize=12)
-    ax.set_title(title, fontsize=14, pad=15)
+    ax.set_xlabel(xlabel, fontsize=12, fontfamily='IPAexGothic')
+    ax.set_ylabel(ylabel, fontsize=12, fontfamily='IPAexGothic')
+    ax.set_title(title, fontsize=14, pad=15, fontfamily='IPAexGothic')
     ax.tick_params(axis='both', labelsize=10)
     plt.tight_layout()
 
