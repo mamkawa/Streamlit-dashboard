@@ -44,10 +44,14 @@ def format_axis_labels(ax, xlabel, ylabel, title):
 def load_data():
     try:
         possible_paths = [
-            os.path.join("data", "sample-data.csv"),
             "sample-data.csv",
-            os.path.join("..", "data", "sample-data.csv"),
-            os.path.join(os.path.dirname(__file__), "data", "sample-data.csv")
+            "./sample-data.csv",
+            "data/sample-data.csv",
+            "./data/sample-data.csv",
+            os.path.join(os.path.dirname(__file__), "sample-data.csv"),
+            os.path.join(os.path.dirname(__file__), "data", "sample-data.csv"),
+            "/mount/src/streamlit-dashboard/sample-data.csv",
+            "/mount/src/streamlit-dashboard/data/sample-data.csv"
         ]
         
         # 現在のディレクトリとファイル一覧を表示（デバッグ用）
@@ -58,6 +62,7 @@ def load_data():
         file_path = None
         for path in possible_paths:
             if os.path.exists(path):
+                st.write(f"見つかったパス: {path}")  # デバッグ用
                 file_path = path
                 break
         
