@@ -24,45 +24,22 @@ def load_data():
         st.write("現在のディレクトリ:", current_dir)
         st.write("ディレクトリ内のファイル:", os.listdir())
         
-        # スクリプトのディレクトリを取得
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        st.write("スクリプトのディレクトリ:", script_dir)
+        # dataディレクトリ内のファイル一覧を表示
+        data_dir = "data"
+        if os.path.exists(data_dir):
+            st.write("dataディレクトリ内のファイル:", os.listdir(data_dir))
         
-        # データファイルのパスを指定（複数のパターンを試行）
-        possible_paths = [
-            os.path.join(current_dir, "sample-data.csv"),
-            os.path.join(script_dir, "sample-data.csv"),
-            os.path.join(current_dir, "data", "sample-data.csv"),
-            os.path.join(script_dir, "data", "sample-data.csv"),
-            "sample-data.csv",
-            "./sample-data.csv",
-            "../sample-data.csv",
-            "data/sample-data.csv",
-            "./data/sample-data.csv"
-        ]
+        # データファイルのパスを指定
+        file_path = os.path.join("data", "sample-data.csv")
         
-        df = None
-        used_path = None
-        
-        # 各パスを試行
-        for path in possible_paths:
-            try:
-                if os.path.exists(path):
-                    st.write(f"ファイルが見つかりました: {path}")
-                    df = pd.read_csv(path, encoding='utf-8')
-                    used_path = path
-                    break
-            except Exception as e:
-                st.write(f"パス {path} でエラー: {str(e)}")
-                continue
-        
-        if df is None:
-            st.error("データファイルが見つかりません。")
-            st.write("試行したパス:")
-            for path in possible_paths:
-                st.write(f"- {path}")
+        # ファイルの存在確認
+        if not os.path.exists(file_path):
+            st.error(f"ファイルが見つかりません: {file_path}")
             return None
             
+        # データの読み込み
+        df = pd.read_csv(file_path, encoding='utf-8')
+        
         # カラム名を表示（デバッグ用）
         st.write("データのカラム:", df.columns.tolist())
         
@@ -86,7 +63,7 @@ def load_data():
         elif '売上金' in df.columns:
             df['売上金額'] = df['売上金']
         
-        st.success(f"データ読み込み成功! 使用したパス: {used_path}")
+        st.success(f"データ読み込み成功! 使用したパス: {file_path}")
         return df
         
     except Exception as e:
