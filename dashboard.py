@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+from matplotlib import font_manager
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -15,29 +16,36 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# プロットの基本設定
+# フォントの設定
+plt.rcParams['font.family'] = ['Hiragino Sans GB', 'Yu Gothic', 'Meiryo', 'Takao', 'DejaVu Sans']
+
+# グラフスタイルの設定
+plt.style.use('seaborn')
+sns.set(font='Hiragino Sans GB', font_scale=1.0)
 plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', 'MS Gothic', 'IPAexGothic', 'IPAPGothic'],
     'axes.unicode_minus': False,
+    'axes.grid': True,
+    'grid.linestyle': '--',
+    'grid.alpha': 0.6,
     'figure.subplot.left': 0.15,
     'figure.subplot.right': 0.95,
     'figure.subplot.bottom': 0.15,
     'figure.subplot.top': 0.95,
-    'font.size': 10
+    'font.size': 12
 })
 
 def create_figure(figsize=(10, 6)):
+    """グラフのベース設定を行う関数"""
     fig, ax = plt.subplots(figsize=figsize)
     ax.tick_params(labelsize=10)
-    ax.grid(True, linestyle='--', alpha=0.6)
     return fig, ax
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=10)
-    ax.set_ylabel(ylabel, fontsize=10)
-    ax.set_title(title, fontsize=12, pad=15)
+    ax.set_xlabel(xlabel, fontsize=12, fontfamily='Hiragino Sans GB')
+    ax.set_ylabel(ylabel, fontsize=12, fontfamily='Hiragino Sans GB')
+    ax.set_title(title, fontsize=14, fontfamily='Hiragino Sans GB', pad=15)
+    ax.tick_params(axis='both', labelsize=10)
     plt.tight_layout()
 
 @st.cache_data
