@@ -5,6 +5,7 @@ import seaborn as sns
 import os
 import warnings
 from matplotlib import font_manager
+import matplotlib as mpl
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -17,9 +18,15 @@ st.set_page_config(
 )
 
 # フォントの設定
-plt.rcParams.update({
-    'font.family': 'IPAexGothic',
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['Noto Sans CJK JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans']
+
+# Matplotlibの基本設定
+mpl.rcParams.update({
     'axes.unicode_minus': False,
+    'axes.grid': True,
+    'grid.linestyle': '--',
+    'grid.alpha': 0.6,
     'font.size': 12,
     'axes.labelsize': 12,
     'axes.titlesize': 14,
@@ -29,20 +36,18 @@ plt.rcParams.update({
 
 # seabornの設定
 sns.set_style("whitegrid")
-sns.set_context("notebook", font_scale=1.0, rc={"font.family": "IPAexGothic"})
 
 def create_figure(figsize=(10, 6)):
     """グラフのベース設定を行う関数"""
     fig, ax = plt.subplots(figsize=figsize)
     ax.grid(True, linestyle='--', alpha=0.6)
-    plt.rcParams['font.family'] = 'IPAexGothic'  # 各図で明示的にフォントを設定
     return fig, ax
 
 def format_axis_labels(ax, xlabel, ylabel, title):
     """軸ラベルとタイトルを設定する関数"""
-    ax.set_xlabel(xlabel, fontsize=12, fontfamily='IPAexGothic')
-    ax.set_ylabel(ylabel, fontsize=12, fontfamily='IPAexGothic')
-    ax.set_title(title, fontsize=14, pad=15, fontfamily='IPAexGothic')
+    ax.set_xlabel(xlabel, fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=12)
+    ax.set_title(title, fontsize=14, pad=15)
     ax.tick_params(axis='both', labelsize=10)
     plt.tight_layout()
 
