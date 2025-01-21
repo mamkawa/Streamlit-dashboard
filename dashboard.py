@@ -35,14 +35,30 @@ st.set_page_config(
 )
 
 # プロットの基本設定
-plt.style.use('default')
-sns.set_theme(style="whitegrid")
+plt.rcParams.update({
+    'font.family': 'IPAexGothic',
+    'font.size': 10,
+    'axes.unicode_minus': False,
+    'axes.grid': True,
+    'grid.linestyle': '--',
+    'grid.alpha': 0.6
+})
 
 def create_figure(figsize=(10, 6)):
     fig, ax = plt.subplots(figsize=figsize)
     ax.tick_params(labelsize=10)
-    plt.rcParams['font.size'] = 10  # デフォルトのフォントサイズ
+    ax.grid(True, linestyle='--', alpha=0.6)
     return fig, ax
+
+def format_axis_labels(ax, xlabel, ylabel, title):
+    """軸ラベルとタイトルを設定する関数"""
+    ax.set_xlabel(xlabel, fontsize=10, fontname='IPAexGothic')
+    ax.set_ylabel(ylabel, fontsize=10, fontname='IPAexGothic')
+    ax.set_title(title, fontsize=12, fontname='IPAexGothic', pad=15)
+    for label in ax.get_xticklabels():
+        label.set_fontname('IPAexGothic')
+    for label in ax.get_yticklabels():
+        label.set_fontname('IPAexGothic')
 
 @st.cache_data
 def load_data():
@@ -146,9 +162,7 @@ def main():
                 fig1, ax1 = create_figure()
                 order = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日']
                 sns.boxplot(data=filtered_df, x='曜日', y='売上金額', order=order, ax=ax1)
-                ax1.set_title('曜日別売上金額分布', fontsize=12, pad=15)
-                ax1.set_xlabel('曜日', fontsize=10)
-                ax1.set_ylabel('売上金額（円）', fontsize=10)
+                format_axis_labels(ax1, '曜日', '売上金額（円）', '曜日別売上金額分布')
                 plt.xticks(rotation=45)
                 st.pyplot(fig1)
                 
@@ -160,9 +174,7 @@ def main():
                 st.subheader("曜日別販売数量")
                 fig2, ax2 = create_figure()
                 sns.boxplot(data=filtered_df, x='曜日', y='数量', order=order, ax=ax2)
-                ax2.set_title('曜日別販売数量分布', fontsize=12, pad=15)
-                ax2.set_xlabel('曜日', fontsize=10)
-                ax2.set_ylabel('販売数量', fontsize=10)
+                format_axis_labels(ax2, '曜日', '販売数量', '曜日別販売数量分布')
                 plt.xticks(rotation=45)
                 st.pyplot(fig2)
 
@@ -174,9 +186,7 @@ def main():
                 st.subheader("支払方法別売上金額")
                 fig1, ax1 = create_figure(figsize=(8, 6))
                 sns.barplot(data=filtered_df, x='支払方法', y='売上金額', ax=ax1)
-                ax1.set_title('支払方法別平均売上金額', fontsize=12, pad=15)
-                ax1.set_xlabel('支払方法', fontsize=10)
-                ax1.set_ylabel('売上金額（円）', fontsize=10)
+                format_axis_labels(ax1, '支払方法', '売上金額（円）', '支払方法別平均売上金額')
                 st.pyplot(fig1)
                 
                 payment_stats = create_payment_stats(filtered_df)
@@ -188,11 +198,9 @@ def main():
                 fig2, ax2 = create_figure()
                 order = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日']
                 sns.boxplot(data=filtered_df, x='曜日', y='売上金額', hue='支払方法', order=order, ax=ax2)
-                ax2.set_title('支払方法別・曜日別売上金額分布', fontsize=12, pad=15)
-                ax2.set_xlabel('曜日', fontsize=10)
-                ax2.set_ylabel('売上金額（円）', fontsize=10)
+                format_axis_labels(ax2, '曜日', '売上金額（円）', '支払方法別・曜日別売上金額分布')
                 plt.xticks(rotation=45)
-                plt.legend(bbox_to_anchor=(1.05, 1), fontsize=8)
+                plt.legend(bbox_to_anchor=(1.05, 1), fontsize=8, prop={'family': 'IPAexGothic'})
                 st.pyplot(fig2)
 
         st.markdown("---")
