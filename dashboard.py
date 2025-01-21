@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+import japanize_matplotlib
 
 # 警告を無視
 warnings.filterwarnings('ignore')
@@ -17,8 +18,7 @@ st.set_page_config(
 
 # プロットの基本設定
 plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP'],
+    'font.family': ['IPAexGothic', 'MS Gothic', 'Hiragino Sans'],
     'font.size': 10,
     'axes.unicode_minus': False,
     'figure.subplot.left': 0.15,
