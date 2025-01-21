@@ -4,9 +4,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+import matplotlib as mpl
 
 # 警告を無視
 warnings.filterwarnings('ignore')
+
+# 日本語フォント設定
+mpl.rc('font', family='DejaVu Sans')
+mpl.rcParams['axes.formatter.use_locale'] = True
 
 # ページ設定
 st.set_page_config(
@@ -16,11 +21,13 @@ st.set_page_config(
 )
 
 # プロットの基本設定
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['Arial', 'Yu Gothic', 'Hiragino Maru Gothic Pro']
-plt.rcParams['axes.unicode_minus'] = False
-plt.rcParams['figure.autolayout'] = True
-sns.set_theme(style="whitegrid")
+plt.style.use('default')
+sns.set_theme(style="whitegrid", font='DejaVu Sans')
+
+def create_figure(figsize=(10, 6)):
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.tick_params(labelsize=10)
+    return fig, ax
 
 @st.cache_data
 def load_data():
@@ -121,12 +128,12 @@ def main():
             
             with col1:
                 st.subheader("曜日別売上金額")
-                fig1, ax1 = plt.subplots(figsize=(10, 6))
+                fig1, ax1 = create_figure()
                 order = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日']
                 sns.boxplot(data=filtered_df, x='曜日', y='売上金額', order=order, ax=ax1)
-                ax1.set_title('曜日別売上金額分布')
-                ax1.set_xlabel('曜日')
-                ax1.set_ylabel('売上金額（円）')
+                ax1.set_title('曜日別売上金額分布', fontsize=12, pad=15)
+                ax1.set_xlabel('曜日', fontsize=10)
+                ax1.set_ylabel('売上金額（円）', fontsize=10)
                 plt.xticks(rotation=45)
                 st.pyplot(fig1)
                 
@@ -136,11 +143,11 @@ def main():
             
             with col2:
                 st.subheader("曜日別販売数量")
-                fig2, ax2 = plt.subplots(figsize=(10, 6))
+                fig2, ax2 = create_figure()
                 sns.boxplot(data=filtered_df, x='曜日', y='数量', order=order, ax=ax2)
-                ax2.set_title('曜日別販売数量分布')
-                ax2.set_xlabel('曜日')
-                ax2.set_ylabel('販売数量')
+                ax2.set_title('曜日別販売数量分布', fontsize=12, pad=15)
+                ax2.set_xlabel('曜日', fontsize=10)
+                ax2.set_ylabel('販売数量', fontsize=10)
                 plt.xticks(rotation=45)
                 st.pyplot(fig2)
 
@@ -150,11 +157,11 @@ def main():
             
             with col1:
                 st.subheader("支払方法別売上金額")
-                fig1, ax1 = plt.subplots(figsize=(8, 6))
+                fig1, ax1 = create_figure(figsize=(8, 6))
                 sns.barplot(data=filtered_df, x='支払方法', y='売上金額', ax=ax1)
-                ax1.set_title('支払方法別平均売上金額')
-                ax1.set_xlabel('支払方法')
-                ax1.set_ylabel('売上金額（円）')
+                ax1.set_title('支払方法別平均売上金額', fontsize=12, pad=15)
+                ax1.set_xlabel('支払方法', fontsize=10)
+                ax1.set_ylabel('売上金額（円）', fontsize=10)
                 st.pyplot(fig1)
                 
                 payment_stats = create_payment_stats(filtered_df)
@@ -163,14 +170,14 @@ def main():
             
             with col2:
                 st.subheader("支払方法別・曜日別売上金額")
-                fig2, ax2 = plt.subplots(figsize=(10, 6))
+                fig2, ax2 = create_figure()
                 order = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日']
                 sns.boxplot(data=filtered_df, x='曜日', y='売上金額', hue='支払方法', order=order, ax=ax2)
-                ax2.set_title('支払方法別・曜日別売上金額分布')
-                ax2.set_xlabel('曜日')
-                ax2.set_ylabel('売上金額（円）')
+                ax2.set_title('支払方法別・曜日別売上金額分布', fontsize=12, pad=15)
+                ax2.set_xlabel('曜日', fontsize=10)
+                ax2.set_ylabel('売上金額（円）', fontsize=10)
                 plt.xticks(rotation=45)
-                plt.legend(bbox_to_anchor=(1.05, 1))
+                plt.legend(bbox_to_anchor=(1.05, 1), fontsize=8)
                 st.pyplot(fig2)
 
         st.markdown("---")
