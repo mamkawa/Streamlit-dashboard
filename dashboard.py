@@ -44,48 +44,21 @@ def format_axis_labels(ax, xlabel, ylabel, title):
 def load_data():
     try:
         # データファイルの場所を特定
-        current_dir = os.getcwd()
-        script_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = "data/sample-data.csv"
         
-        possible_paths = [
-            os.path.join(current_dir, "sample-data.csv"),
-            os.path.join(current_dir, "data", "sample-data.csv"),
-            os.path.join(script_dir, "sample-data.csv"),
-            os.path.join(script_dir, "data", "sample-data.csv"),
-            "/mount/src/streamlit-dashboard/sample-data.csv",
-            "/mount/src/streamlit-dashboard/data/sample-data.csv",
-            "データ分析/sample-data.csv",
-            "./データ分析/sample-data.csv"
-        ]
-        
-        # デバッグ情報を表示
-        st.write("現在のディレクトリ:", current_dir)
-        st.write("スクリプトのディレクトリ:", script_dir)
-        st.write("ファイル一覧:")
-        for root, dirs, files in os.walk(current_dir):
-            st.write(f"Directory: {root}")
-            for file in files:
-                st.write(f"  - {file}")
-        
-        # 利用可能なパスを探す
-        file_path = None
-        for path in possible_paths:
-            st.write(f"パスを確認中: {path}")
-            if os.path.exists(path):
-                st.write(f"✓ ファイルが見つかりました: {path}")
-                file_path = path
-                break
-            else:
-                st.write(f"✗ ファイルが見つかりません: {path}")
-        
-        if file_path is None:
-            st.error(f"ファイルが見つかりません。試行したパス: {possible_paths}")
+        if not os.path.exists(file_path):
+            st.error(f"ファイルが見つかりません: {file_path}")
+            # 現在のディレクトリ情報を表示
+            st.write("現在のディレクトリ:", os.getcwd())
+            st.write("ファイル一覧:")
+            for root, dirs, files in os.walk("."):
+                st.write(f"Directory: {root}")
+                for file in files:
+                    st.write(f"  - {file}")
             return None
             
         # データの読み込みと前処理
         df = pd.read_csv(file_path, encoding='utf-8')
-        st.write("データの読み込みに成功しました。")
-        st.write("列名:", df.columns.tolist())
         
         df['購入日'] = pd.to_datetime(df['購入日'])
         df['年月'] = df['購入日'].dt.strftime('%Y/%m')
