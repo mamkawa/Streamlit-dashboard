@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
+import os
 
 # ページ設定
 st.set_page_config(
@@ -18,10 +19,35 @@ plt.rcParams['font.family'] = ['MS Gothic', 'DejaVu Sans']
 @st.cache_data
 def load_data():
     try:
-        # データファイルのパスを指定
-        file_path = "data/sampledata.csv"
-        df = pd.read_csv(file_path, encoding='utf-8')
+        # データファイルのパスを指定（複数のパターンを試行）
+        possible_paths = [
+            "data/sampledata.csv",  # ローカル開発用
+            "sampledata.csv",       # ルートディレクトリ
+            "../data/sampledata.csv",  # 1階層上
+            os.path.join(os.path.dirname(__file__), "data", "sampledata.csv")  # 絶対パス
+        ]
         
+        df = None
+        used_path = None
+        
+        for path in possible_paths:
+            try:
+                if os.path.exists(path):
+                    df = pd.read_csv(path, encoding='utf-8')
+                    used_path = path
+                    break
+            except:
+                continue
+        
+        if df is None:
+            st.error("データファイルが見つかりません。")
+            st.write("試行したパス:")
+            for path in possible_paths:
+                st.write(f"- {path}")
+            st.write("現在のディレクトリ:", os.getcwd())
+            st.write("ディレクトリ内のファイル:", os.listdir())
+            return None
+            
         # 日付の変換
         df['購入日'] = pd.to_datetime(df['購入日'])
         
@@ -36,10 +62,13 @@ def load_data():
             'Sunday': '日曜日'
         })
         
+        st.success(f"データ読み込み成功! 使用したパス: {used_path}")
         return df
+        
     except Exception as e:
         st.error(f"データ読み込みエラー: {str(e)}")
-        st.write("現在のディレクトリ:", Path.cwd())
+        st.write("現在のディレクトリ:", os.getcwd())
+        st.write("ディレクトリ内のファイル:", os.listdir())
         return None
 
 # タイトル
